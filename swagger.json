@@ -1,0 +1,131 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Todo API",
+    "description": "API documentation for Todo application"
+  },
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "todos",
+      "description": "API for managing todos"
+    }
+  ],
+  "paths": {
+    "/todos": {
+      "get": {
+        "tags": ["todos"],
+        "summary": "Get all todos",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "integer" },
+                  "text": { "type": "string" },
+                  "completed": { "type": "boolean" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["todos"],
+        "summary": "Create a new todo",
+        "parameters": [
+          {
+            "name": "text",
+            "in": "body",
+            "description": "Todo text",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Todo created successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "integer" },
+                "text": { "type": "string" },
+                "completed": { "type": "boolean" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/todos/{id}": {
+      "put": {
+        "tags": ["todos"],
+        "summary": "Update a todo",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Todo ID",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "text",
+            "in": "body",
+            "description": "Updated todo text",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "completed",
+            "in": "body",
+            "description": "Updated completion status",
+            "required": false,
+            "schema": { "type": "boolean" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Todo updated successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "integer" },
+                "text": { "type": "string" },
+                "completed": { "type": "boolean" }
+              }
+            }
+          },
+          "404": {
+            "description": "Todo not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["todos"],
+        "summary": "Delete a todo",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Todo ID",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Todo deleted successfully"
+          }
+        }
+      }
+    }
+  }
+}
