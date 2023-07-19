@@ -4,6 +4,7 @@ const axios = require("axios");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
 const cors = require("cors");
+const serverlessHttp = require("serverless-http");
 
 const app = express();
 const port = 3000;
@@ -105,3 +106,6 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
+
+// Export the app for serverless deployment
+module.exports.handler = serverless(app);
