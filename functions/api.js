@@ -4,16 +4,15 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("../swagger.json");
 const cors = require("cors");
 const serverlessHttp = require("serverless-http");
-const router = express.Router();
 
 const app = express();
-const port = 3000;
+const router = express.Router();
 
 // Middleware to parse incoming JSON data
-app.use(express.json());
+router.use(express.json());
 
 // Enable CORS for all routes
-app.use(cors());
+router.use(cors());
 
 // Google Sign-In client ID (Replace this with your own client ID)
 const GOOGLE_CLIENT_ID =
@@ -62,7 +61,7 @@ async function tokenValidationMiddleware(req, res, next) {
 }
 
 // Route to validate Google ID token
-app.post("/validate-token", async (req, res) => {
+router.post("/validate-token", async (req, res) => {
   const { token } = req.body;
 
   if (!token) {
@@ -80,32 +79,32 @@ app.post("/validate-token", async (req, res) => {
 });
 
 // Protected route, requires token validation
-app.get("/todos", tokenValidationMiddleware, (req, res) => {
+router.get("/todos", tokenValidationMiddleware, (req, res) => {
   res.json(todos);
 });
 
 // Protected route, requires token validation
-app.post("/todos", tokenValidationMiddleware, (req, res) => {
+router.post("/todos", tokenValidationMiddleware, (req, res) => {
   // Rest of the code for creating a new todo...
 });
 
 // Protected route, requires token validation
-app.put("/todos/:id", tokenValidationMiddleware, (req, res) => {
+router.put("/todos/:id", tokenValidationMiddleware, (req, res) => {
   // Rest of the code for updating a todo...
 });
 
 // Protected route, requires token validation
-app.delete("/todos/:id", tokenValidationMiddleware, (req, res) => {
+router.delete("/todos/:id", tokenValidationMiddleware, (req, res) => {
   // Rest of the code for deleting a todo...
 });
 
 // Serve Swagger UI at /api-docs
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+router.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Start the server
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`Server running on http://localhost:${port}`);
+// });
 
 // Export the app for serverless deployment
 app.use("/.netlify/functions/api", router);
