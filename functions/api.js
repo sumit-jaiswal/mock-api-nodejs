@@ -1,10 +1,10 @@
 const express = require("express");
 const { OAuth2Client } = require("google-auth-library");
-const axios = require("axios");
 const swaggerUi = require("swagger-ui-express");
-const swaggerDocument = require("./swagger.json");
+const swaggerDocument = require("../swagger.json");
 const cors = require("cors");
 const serverlessHttp = require("serverless-http");
+const router = express.Router();
 
 const app = express();
 const port = 3000;
@@ -108,4 +108,5 @@ app.listen(port, () => {
 });
 
 // Export the app for serverless deployment
-module.exports.handler = serverless(app);
+app.use("/.netlify/functions/api", router);
+module.exports.handler = serverlessHttp(app);
